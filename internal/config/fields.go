@@ -2,7 +2,9 @@ package config
 
 import (
 	"fmt"
+	"iter"
 	"slices"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -87,6 +89,27 @@ func (fc *FieldCollection) Group() FieldGroup {
 		groups[f.Group] = append(groups[f.Group], f)
 	}
 	return groups
+}
+
+func (fc *FieldCollection) GroupIter() iter.Seq2[string, FieldCollection] {
+	groups := fc.Group()
+	groupNames := make([]string, 0, len(groups))
+	for group := range groups {
+		groupNames = append(groupNames, group)
+	}
+	slices.Sort(groupNames)
+
+	return func(yield func(string, FieldCollection) bool) {
+		for _, group := range groupNames {
+			fields := groups[group]
+			slices.SortFunc(fields, func(a, b *Field) int {
+				return strings.Compare(a.Name, b.Name)
+			})
+			if !yield(group, fields) {
+				break
+			}
+		}
+	}
 }
 
 func (fc *FieldCollection) Map() FieldMap {

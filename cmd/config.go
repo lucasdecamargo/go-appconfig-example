@@ -113,52 +113,58 @@ func describeConfig(cmd *cobra.Command, args []string) error {
 	w, cleanup := Pager()
 	defer cleanup()
 
-	for _, field := range selectedFields {
-		if field.Hidden && !FlagShowHidden {
-			continue
-		}
+	for group, fields := range selectedFields.GroupIter() {
+		fmt.Fprintf(w, "\n%s\n", group)
 
-		if field.Deprecated != "" {
-			fmt.Fprintf(w, "\n%s (deprecated: %s)\n", field.Name, field.Deprecated)
-		} else {
-			fmt.Fprintf(w, "\n%s\n", field.Name)
-		}
-
-		fmt.Fprintf(w, "  %s\n", field.Description)
-		fmt.Fprintf(w, "  Type: %s\n", field.Type)
-
-		val := config.ReadField(field)
-
-		if val != nil && val != field.Default {
-			fmt.Fprintf(w, "  Value: %v\n", val)
-		}
-
-		if field.Default != nil {
-			fmt.Fprintf(w, "  Default: %v\n", field.Default)
-		}
-
-		if field.ValidValues != nil {
-			fmt.Fprintf(w, "  Valid values: %v\n", field.ValidValues)
-		}
-
-		if FlagVerbose {
-			if field.ValidateTag != "" {
-				fmt.Fprintf(w, "  Validation: %s\n", field.ValidateTag)
+		for _, field := range fields {
+			if field.Hidden && !FlagShowHidden {
+				continue
 			}
 
-			if field.Example != "" {
-				fmt.Fprintf(w, "  Example: %s\n", field.Example)
+			if field.Deprecated != "" {
+				fmt.Fprintf(w, "\n  %s (deprecated: %s)\n", field.Name, field.Deprecated)
+			} else {
+				fmt.Fprintf(w, "\n  %s\n", field.Name)
 			}
 
-			if field.Docstring != "" {
-				fmt.Fprintf(w, "  Doc:\n")
-				// Print field.Docstring with 2-space indentation, handling newlines
-				lines := strings.SplitSeq(field.Docstring, "\n")
-				for line := range lines {
-					fmt.Fprintf(w, "    %s\n", line)
+			fmt.Fprintf(w, "    %s\n", field.Description)
+			fmt.Fprintf(w, "    Type: %s\n", field.Type)
+
+			val := config.ReadField(field)
+
+			if val != nil && val != field.Default {
+				fmt.Fprintf(w, "    Value: %v\n", val)
+			}
+
+			if field.Default != nil {
+				fmt.Fprintf(w, "    Default: %v\n", field.Default)
+			}
+
+			if field.ValidValues != nil {
+				fmt.Fprintf(w, "    Valid values: %v\n", field.ValidValues)
+			}
+
+			if FlagVerbose {
+				if field.ValidateTag != "" {
+					fmt.Fprintf(w, "    Validation: %s\n", field.ValidateTag)
+				}
+
+				if field.Example != "" {
+					fmt.Fprintf(w, "    Example: %s\n", field.Example)
+				}
+
+				if field.Docstring != "" {
+					fmt.Fprintf(w, "    Doc:\n")
+					// Print field.Docstring with 2-space indentation, handling newlines
+					lines := strings.SplitSeq(field.Docstring, "\n")
+					for line := range lines {
+						fmt.Fprintf(w, "      %s\n", line)
+					}
 				}
 			}
 		}
+
+		fmt.Fprintf(w, "\n")
 	}
 
 	return nil
