@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path"
 	"strings"
 	"time"
@@ -67,7 +68,7 @@ func ReadFieldDuration(f *Field) time.Duration {
 
 func WriteField(f *Field, value any) error {
 	if err := f.Validate(value); err != nil {
-		return err
+		return fmt.Errorf("validate: %w", err)
 	}
 
 	viper.Set(f.Name, value)
@@ -76,5 +77,33 @@ func WriteField(f *Field, value any) error {
 }
 
 func Save() error {
-	return viper.WriteConfig()
+	cfgFile := viper.GetString(FieldFlagConfig.Name)
+	if cfgFile == "" {
+		return fmt.Errorf("config file not set")
+	}
+
+	if err := viper.WriteConfigAs(cfgFile); err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			// If the config file is not found, create it.
+			if err := os.MkdirAll(path.Dir(cfgFile), 0755); err != nil {
+				return fmt.Errorf("create config file directory: %w", err)
+			}
+
+			if f, err := os.Create(cfgFile); err != nil {
+				return fmt.Errorf("create config file: %s: %w", cfgFile, err)
+			} else {
+				f.Close()
+			}
+
+			if err := viper.WriteConfigAs(cfgFile); err != nil {
+				return fmt.Errorf("write config: %w", err)
+			}
+
+			return nil
+		}
+
+		return fmt.Errorf("write config: %s: %w", cfgFile, err)
+	}
+
+	return nil
 }

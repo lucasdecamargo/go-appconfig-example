@@ -45,12 +45,6 @@ func init() {
 	configDir, _ := os.UserConfigDir()
 	defaultConfig := path.Join(configDir, consts.AppName, "config.yaml")
 
-	// If the default config file is in the user's home directory, use "~" instead.
-	homeDir, _ := os.UserHomeDir()
-	if len(homeDir) > 0 && len(defaultConfig) > len(homeDir) && defaultConfig[:len(homeDir)] == homeDir {
-		defaultConfig = "~" + defaultConfig[len(homeDir):]
-	}
-
 	rootCmd.PersistentFlags().StringVarP(
 		&FlagConfig,
 		config.FieldFlagConfig.Name,

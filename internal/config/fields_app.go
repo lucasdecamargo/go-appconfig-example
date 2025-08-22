@@ -26,18 +26,19 @@ func init() {
 }
 
 var FieldAppEnvironment = &Field{
-	Name:        "app.environment",
+	Name:        "environment",
 	Group:       GroupApplication,
 	Type:        FieldTypeString,
 	Default:     defaultString(DefaultAppEnvironment),
 	Description: "The environment in which the application runs.",
 	Example:     "prod, test, dev",
+	Hidden:      true, // This field is not shown in the config list
 }
 
 // region Logging
 
 var FieldAppLogLevel = &Field{
-	Name:        "app.log.level",
+	Name:        "log.level",
 	Group:       GroupApplication,
 	Type:        FieldTypeString,
 	Default:     defaultString(DefaultAppLogLevel),
@@ -46,7 +47,7 @@ var FieldAppLogLevel = &Field{
 }
 
 var FieldAppLogOutput = &Field{
-	Name:        "app.log.output",
+	Name:        "log.output",
 	Group:       GroupApplication,
 	Type:        FieldTypeString,
 	Default:     defaultString(DefaultAppLogOutput),
@@ -56,7 +57,7 @@ var FieldAppLogOutput = &Field{
 }
 
 var FieldAppLogFormat = &Field{
-	Name:        "app.log.format",
+	Name:        "log.format",
 	Group:       GroupApplication,
 	Type:        FieldTypeString,
 	Default:     defaultString(DefaultAppLogFormat),
@@ -67,7 +68,7 @@ var FieldAppLogFormat = &Field{
 // region Updates
 
 var FieldAppUpdateUnstable = &Field{
-	Name:        "app.update.unstable",
+	Name:        "update.unstable",
 	Group:       GroupApplication,
 	Type:        FieldTypeBool,
 	Default:     defaultBool(DefaultAppUpdateUnstable),
@@ -75,7 +76,7 @@ var FieldAppUpdateUnstable = &Field{
 }
 
 var FieldAppUpdateAuto = &Field{
-	Name:        "app.update.auto",
+	Name:        "update.auto",
 	Group:       GroupApplication,
 	Type:        FieldTypeBool,
 	Default:     defaultBool(DefaultAppUpdateAuto),
@@ -83,7 +84,7 @@ var FieldAppUpdateAuto = &Field{
 }
 
 var FieldAppUpdatePeriod = &Field{
-	Name:         "app.update.period",
+	Name:         "update.period",
 	Group:        GroupApplication,
 	Type:         FieldTypeDuration,
 	Default:      defaultDuration(DefaultAppUpdatePeriod),

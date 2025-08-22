@@ -11,7 +11,7 @@ func init() {
 }
 
 var FieldNetworkProxyAll = &Field{
-	Name:        "network.proxy.all",
+	Name:        "proxy.all",
 	Group:       GroupNetwork,
 	Type:        FieldTypeString,
 	Default:     nil,
@@ -21,7 +21,7 @@ var FieldNetworkProxyAll = &Field{
 }
 
 var FieldNetworkProxyHttp = &Field{
-	Name:        "network.proxy.http",
+	Name:        "proxy.http",
 	Group:       GroupNetwork,
 	Type:        FieldTypeString,
 	Default:     nil,
@@ -31,7 +31,7 @@ var FieldNetworkProxyHttp = &Field{
 }
 
 var FieldNetworkProxyHttps = &Field{
-	Name:        "network.proxy.https",
+	Name:        "proxy.https",
 	Group:       GroupNetwork,
 	Type:        FieldTypeString,
 	Default:     nil,
