@@ -1,8 +1,10 @@
 package config
 
+// GroupNetwork is the logical group name for network-related configuration fields
 const GroupNetwork = "Network"
 
 func init() {
+	// Register all network configuration fields
 	Fields.Add(
 		FieldNetworkProxyAll,
 		FieldNetworkProxyHttp,
@@ -10,6 +12,9 @@ func init() {
 	)
 }
 
+// Proxy configuration fields
+
+// FieldNetworkProxyAll defines a proxy server for all network traffic
 var FieldNetworkProxyAll = &Field{
 	Name:        "proxy.all",
 	Group:       GroupNetwork,
@@ -20,6 +25,7 @@ var FieldNetworkProxyAll = &Field{
 	Example:     "http://user:password@host:port",
 }
 
+// FieldNetworkProxyHttp defines a proxy server for HTTP traffic only
 var FieldNetworkProxyHttp = &Field{
 	Name:        "proxy.http",
 	Group:       GroupNetwork,
@@ -30,6 +36,7 @@ var FieldNetworkProxyHttp = &Field{
 	Example:     "http://user:password@host:port",
 }
 
+// FieldNetworkProxyHttps defines a proxy server for HTTPS traffic only
 var FieldNetworkProxyHttps = &Field{
 	Name:        "proxy.https",
 	Group:       GroupNetwork,

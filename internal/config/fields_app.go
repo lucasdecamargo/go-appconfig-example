@@ -1,19 +1,23 @@
 package config
 
+// GroupApplication is the logical group name for application-related configuration fields
 const GroupApplication = "Application"
 
+// Default values for application configuration fields.
+// These are defined as string variables to allow build-time definition with -ldflags.
+// For example: go build -ldflags "-X github.com/lucasdecamargo/go-appconfig-example/internal/config.DefaultAppEnvironment=prod"
 var (
-	// Defaults are set as string variables to allow build-time definition with -ldflags
-	DefaultAppEnvironment    = "dev"
-	DefaultAppLogLevel       = "info"
-	DefaultAppLogOutput      = ""
-	DefaultAppLogFormat      = "text"
-	DefaultAppUpdateUnstable = "false"
-	DefaultAppUpdateAuto     = "false"
-	DefaultAppUpdatePeriod   = "15m"
+	DefaultAppEnvironment    = "dev"   // Default application environment
+	DefaultAppLogLevel       = "info"  // Default logging level
+	DefaultAppLogOutput      = ""      // Default log output (empty = stdout)
+	DefaultAppLogFormat      = "text"  // Default log format
+	DefaultAppUpdateUnstable = "false" // Default unstable update setting
+	DefaultAppUpdateAuto     = "false" // Default auto-update setting
+	DefaultAppUpdatePeriod   = "15m"   // Default update check period
 )
 
 func init() {
+	// Register all application configuration fields
 	Fields.Add(
 		FieldAppEnvironment,
 		FieldAppLogLevel,
@@ -25,6 +29,7 @@ func init() {
 	)
 }
 
+// FieldAppEnvironment defines the application environment setting
 var FieldAppEnvironment = &Field{
 	Name:        "environment",
 	Group:       GroupApplication,
@@ -35,8 +40,9 @@ var FieldAppEnvironment = &Field{
 	Hidden:      true, // This field is not shown in the config list
 }
 
-// region Logging
+// Logging configuration fields
 
+// FieldAppLogLevel defines the application logging level
 var FieldAppLogLevel = &Field{
 	Name:        "log.level",
 	Group:       GroupApplication,
@@ -46,16 +52,17 @@ var FieldAppLogLevel = &Field{
 	ValidValues: []any{"debug", "info", "warn", "error"},
 }
 
+// FieldAppLogOutput defines the log output destination
 var FieldAppLogOutput = &Field{
 	Name:        "log.output",
 	Group:       GroupApplication,
 	Type:        FieldTypeString,
 	Default:     defaultString(DefaultAppLogOutput),
 	Description: "The output file to use for the application logs, if set.",
-	ValidateTag: "dirpath",
 	Example:     "/var/log/app.log",
 }
 
+// FieldAppLogFormat defines the log output format
 var FieldAppLogFormat = &Field{
 	Name:        "log.format",
 	Group:       GroupApplication,
@@ -65,8 +72,9 @@ var FieldAppLogFormat = &Field{
 	ValidValues: []any{"json", "text"},
 }
 
-// region Updates
+// Update configuration fields
 
+// FieldAppUpdateUnstable controls whether to receive unstable version updates
 var FieldAppUpdateUnstable = &Field{
 	Name:        "update.unstable",
 	Group:       GroupApplication,
@@ -75,6 +83,7 @@ var FieldAppUpdateUnstable = &Field{
 	Description: "Receive updates for unstable versions.",
 }
 
+// FieldAppUpdateAuto controls automatic application updates
 var FieldAppUpdateAuto = &Field{
 	Name:        "update.auto",
 	Group:       GroupApplication,
@@ -83,6 +92,7 @@ var FieldAppUpdateAuto = &Field{
 	Description: "Automatically update the application when a new version is available.",
 }
 
+// FieldAppUpdatePeriod defines how often to check for updates
 var FieldAppUpdatePeriod = &Field{
 	Name:         "update.period",
 	Group:        GroupApplication,
