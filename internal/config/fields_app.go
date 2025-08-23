@@ -59,6 +59,7 @@ var FieldAppLogOutput = &Field{
 	Type:        FieldTypeString,
 	Default:     defaultString(DefaultAppLogOutput),
 	Description: "The output file to use for the application logs, if set.",
+	ValidateTag: "filepath",
 	Example:     "/var/log/app.log",
 }
 

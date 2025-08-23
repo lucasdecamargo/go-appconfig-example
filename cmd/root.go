@@ -20,9 +20,10 @@ var (
 // rootCmd represents the base command when called without any subcommands.
 // It serves as the entry point for the CLI application.
 var rootCmd = &cobra.Command{
-	Use:   consts.AppName,
-	Short: "Go application with structured configuration example",
-	Long:  `A demonstration of production-ready configuration management in Go using Viper and Cobra.`,
+	Use:     consts.AppName,
+	Short:   "Go application with structured configuration example",
+	Long:    `A demonstration of production-ready configuration management in Go using Viper and Cobra.`,
+	Version: consts.AppVersion,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
